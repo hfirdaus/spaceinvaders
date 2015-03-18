@@ -1,0 +1,144 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/main.o
+LOAD build/jtag.o
+LOAD build/framebuffer.o
+LOAD build/draw.o
+LOAD build/gpio.o
+LOAD build/gameState.o
+LOAD build/gameMenuState.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+
+.data           0x00009080       0x40
+ *(.data)
+ .data          0x00009080        0x0 build/main.o
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080       0x30 build/framebuffer.o
+ .data          0x000090b0       0x10 build/draw.o
+ .data          0x000090c0        0x0 build/gpio.o
+ .data          0x000090c0        0x0 build/gameState.o
+ .data          0x000090c0        0x0 build/gameMenuState.o
+ *.c.o(*)
+
+.igot.plt       0x000090c0        0x0
+ .igot.plt      0x00000000        0x0 build/main.o
+
+.text           0x000090c0      0x440
+ *.c.o(.text)
+ *(.text)
+ .text          0x000090c0       0x34 build/main.o
+ .text          0x000090f4       0x8c build/jtag.o
+                0x000090f4                EnableJTAG
+ .text          0x00009180       0x64 build/framebuffer.o
+                0x00009180                InitFrameBuffer
+ .text          0x000091e4      0x12c build/draw.o
+                0x000091e4                drawInit
+                0x00009208                drawMove
+                0x000092dc                drawClear
+ .text          0x00009310      0x17c build/gpio.o
+                0x00009310                buttonCheckLoop
+                0x000093b4                gpio_setFunctions
+ .text          0x0000948c       0x50 build/gameState.o
+                0x0000948c                updateState
+ .text          0x000094dc       0x24 build/gameMenuState.o
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x00009500        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00009500        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00009500        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00009500        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00009500        0x0
+ .iplt          0x00000000        0x0 build/main.o
+
+.rel.dyn        0x00009500        0x0
+ .rel.iplt      0x00000000        0x0 build/main.o
+
+.bss            0x00009500        0x0
+ .bss           0x00009500        0x0 build/main.o
+ .bss           0x00009500        0x0 build/jtag.o
+ .bss           0x00009500        0x0 build/framebuffer.o
+ .bss           0x00009500        0x0 build/draw.o
+ .bss           0x00009500        0x0 build/gpio.o
+ .bss           0x00009500        0x0 build/gameState.o
+ .bss           0x00009500        0x0 build/gameMenuState.o
+
+.ARM.attributes
+                0x00000000       0x26
+ .ARM.attributes
+                0x00000000       0x26 build/main.o
+ .ARM.attributes
+                0x00000026       0x26 build/jtag.o
+ .ARM.attributes
+                0x0000004c       0x26 build/framebuffer.o
+ .ARM.attributes
+                0x00000072       0x26 build/draw.o
+ .ARM.attributes
+                0x00000098       0x26 build/gpio.o
+ .ARM.attributes
+                0x000000be       0x26 build/gameState.o
+ .ARM.attributes
+                0x000000e4       0x26 build/gameMenuState.o
+
+.debug_line     0x00000000      0x2ed
+ .debug_line    0x00000000       0x58 build/main.o
+ .debug_line    0x00000058       0x61 build/jtag.o
+ .debug_line    0x000000b9       0x5f build/framebuffer.o
+ .debug_line    0x00000118       0x8c build/draw.o
+ .debug_line    0x000001a4       0xa6 build/gpio.o
+ .debug_line    0x0000024a       0x55 build/gameState.o
+ .debug_line    0x0000029f       0x4e build/gameMenuState.o
+
+.debug_info     0x00000000      0x2aa
+ .debug_info    0x00000000       0x5b build/main.o
+ .debug_info    0x0000005b       0x5f build/jtag.o
+ .debug_info    0x000000ba       0x66 build/framebuffer.o
+ .debug_info    0x00000120       0x5f build/draw.o
+ .debug_info    0x0000017f       0x5f build/gpio.o
+ .debug_info    0x000001de       0x64 build/gameState.o
+ .debug_info    0x00000242       0x68 build/gameMenuState.o
+
+.debug_abbrev   0x00000000       0x8a
+ .debug_abbrev  0x00000000       0x12 build/main.o
+ .debug_abbrev  0x00000012       0x14 build/jtag.o
+ .debug_abbrev  0x00000026       0x14 build/framebuffer.o
+ .debug_abbrev  0x0000003a       0x14 build/draw.o
+ .debug_abbrev  0x0000004e       0x14 build/gpio.o
+ .debug_abbrev  0x00000062       0x14 build/gameState.o
+ .debug_abbrev  0x00000076       0x14 build/gameMenuState.o
+
+.debug_aranges  0x00000000       0xe8
+ .debug_aranges
+                0x00000000       0x28 build/main.o
+ .debug_aranges
+                0x00000028       0x20 build/jtag.o
+ .debug_aranges
+                0x00000048       0x20 build/framebuffer.o
+ .debug_aranges
+                0x00000068       0x20 build/draw.o
+ .debug_aranges
+                0x00000088       0x20 build/gpio.o
+ .debug_aranges
+                0x000000a8       0x20 build/gameState.o
+ .debug_aranges
+                0x000000c8       0x20 build/gameMenuState.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o
