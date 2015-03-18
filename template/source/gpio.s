@@ -2,6 +2,7 @@
 .globl	gpio_setFunctions
 .globl  gpio_readLineValues
 .globl buttonCheckLoop
+.globl clock_wait
 
 /*
 1. MOV buttons, #0 // register sampling buttons
@@ -95,7 +96,7 @@ wait_clock:
 	mov 	pc, lr
 
 gpio_setFunctions:
-	push	{lr, r0}
+	push	{r0, lr}
 
 	//setting GPIO9 for LATCH (set to output)
 	ldr 	r0, =baseAddr       	//address of GPSEL0
@@ -133,7 +134,7 @@ gpio_setFunctions:
 	orr	r1, r3 						// set pin11 function in r1
 	str	r1, [r0] 					// write back to GPFSEL0
 
-	pop	{lr, r0}
+	pop	{r0, lr}
 	mov 	pc,lr
 
 /*readGPIOLine input values:
